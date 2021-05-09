@@ -1,0 +1,176 @@
+{
+    "catalogs": [
+      "ORIGEN",
+      "SECTOR",
+      "SEXO",
+      "TIPO_PACIENTE",
+      "SI_NO",
+      "NACIONALIDAD",
+      "RESULTADO_LAB",
+      "RESULTADO_ANTIGENO",
+      "CLASIFICACION_FINAL",
+      "ENTIDADES",
+      "MUNICIPIOS"
+    ],
+    "fields": [
+      {
+        "name": "ID_REGISTRO",
+        "format": "ID"
+      },
+      {
+        "name": "ORIGEN",
+        "format": "ORIGEN"
+      },
+      {
+        "name": "SECTOR",
+        "format": "SECTOR"
+      },
+      {
+        "name": "ENTIDAD_UM",
+        "format": "ENTIDADES"
+      },
+      {
+        "name": "SEXO",
+        "format": "SEXO"
+      },
+      {
+        "name": "ENTIDAD_NAC",
+        "format": "ENTIDADES"
+      },
+      {
+        "name": "MUNICIPIO_RES",
+        "format": "MUNICIPIOS",
+        "relation": "ENTIDAD_RES"
+      },
+      {
+        "name": "ENTIDAD_RES",
+        "format": "ENTIDADES"
+      },
+      {
+        "name": "TIPO_PACIENTE",
+        "format": "TIPO_PACIENTE"
+      },
+      {
+        "name": "FECHA_INGRESO",
+        "format": "DATE"
+      },
+      {
+        "name": "FECHA_SINTOMAS",
+        "format": "DATE"
+      },
+      {
+        "name": "FECHA_DEF",
+        "format": "DATE"
+      },
+      {
+        "name": "INTUBADO",
+        "format": "SI_NO"
+      },
+      {
+        "name": "NEUMONIA",
+        "format": "SI_NO"
+      },
+      {
+        "name": "EDAD",
+        "format": "NUMBER"
+      },
+      {
+        "name": "NACIONALIDAD",
+        "format": "NACIONALIDAD"
+      },
+      {
+        "name": "EMBARAZO",
+        "format": "SI_NO"
+      },
+      {
+        "name": "HABLA_LENGUA_INDIG",
+        "format": "SI_NO"
+      },
+      {
+        "name": "INDIGENA",
+        "format": "SI_NO"
+      },
+      {
+        "name": "DIABETES",
+        "format": "SI_NO"
+      },
+      {
+        "name": "EPOC",
+        "format": "SI_NO"
+      },
+      {
+        "name": "ASMA",
+        "format": "SI_NO"
+      },
+      {
+        "name": "INMUSUPR",
+        "format": "SI_NO"
+      },
+      {
+        "name": "HIPERTENSION",
+        "format": "SI_NO"
+      },
+      {
+        "name": "OTRA_COM",
+        "format": "SI_NO"
+      },
+      {
+        "name": "CARDIOVASCULAR",
+        "format": "SI_NO"
+      },
+      {
+        "name": "OBESIDAD",
+        "format": "SI_NO"
+      },
+      {
+        "name": "RENAL_CRONICA",
+        "format": "SI_NO"
+      },
+      {
+        "name": "TABAQUISMO",
+        "format": "SI_NO"
+      },
+      {
+        "name": "OTRO_CASO",
+        "format": "SI_NO"
+      },
+      {
+        "name": "TOMA_MUESTRA_LAB",
+        "format": "SI_NO"
+      },
+      {
+        "name": "RESULTADO_LAB",
+        "format": "RESULTADO_LAB"
+      },
+      {
+        "name": "TOMA_MUESTRA_ANTIGENO",
+        "format": "SI_NO"
+      },
+      {
+        "name": "RESULTADO_ANTIGENO",
+        "format": "RESULTADO_ANTIGENO"
+      },
+      {
+        "name": "CLASIFICACION_FINAL",
+        "format": "CLASIFICACION_FINAL"
+      },
+      {
+        "name": "MIGRANTE",
+        "format": "SI_NO"
+      },
+      {
+        "name": "PAIS_NACIONALIDAD",
+        "format": "TEXT"
+      },
+      {
+        "name": "PAIS_ORIGEN",
+        "format": "TEXT"
+      },
+      {
+        "name": "UCI",
+        "format": "SI_NO"
+      }
+    ]
+  }
+  
+  
