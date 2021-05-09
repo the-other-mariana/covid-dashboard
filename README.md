@@ -6,7 +6,7 @@ This is a web visualization tool that analyzes the covid-19 cases for Mexico in 
 
 Language: `Python 3.8.1`
 
-## Get Stared
+## Get Started
 
 1. Type on a terminal the following commands:
 
