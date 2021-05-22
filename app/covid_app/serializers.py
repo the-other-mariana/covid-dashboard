@@ -1,6 +1,7 @@
 from .models import COVIDData
 from rest_framework import serializers
 
+# first create a serializer with what you need from the dataframe
 
 class StateSexSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

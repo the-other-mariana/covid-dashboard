@@ -9,27 +9,34 @@ from .serializers import StateSexSerializer, StateSexAgeSerializer
 import pandas as pd
 # Create your views here.
 
+# second you come to views to define the endpoints. include now the serializers
+# this is where we will query the database
+# covidData is the obj that is represented in the db
+# third, go to urls and put the endpoints
 
 def index(request):
     context = {}
+    # inside templates theres another covid_app folder with index
     return render(request, 'covid_app/index.html', context)
 
 
 def pie_chart(request):
     # covid_df = pd.DataFrame.from_records(data)
+    # here get the json from pandas etc etc
     donut_json = '[ { "region": "East", "fruit": "Apples", "count": "53245" }, { "region": "West", "fruit": ' \
                  '"Apples", "count": "28479" }, { "region": "South", "fruit": "Apples", "count": "19697" }, ' \
                  '{ "region": "North", "fruit": "Apples", "count": "24037" }, { "region": "Central", ' \
                  '"fruit": "Apples", "count": "40245" }, { "region": "East", "fruit": "Oranges", "count": "200" ' \
                  '}, { "region": "South", "fruit": "Oranges", "count": "200" }, { "region": "Central", ' \
                  '"fruit": "Oranges", "count": "200" }] '
-    context = {'data_json': SafeString(donut_json)}
+    context = {'data_json': SafeString(donut_json)} # send data json to template html
     return render(request, 'covid_app/donut.html', context)
 
 
 class StateSexSet(viewsets.ModelViewSet):
+    # if you want to filter with sql, do it here in the queryset with objects.filter(params)
     queryset = COVIDData.objects.all()
-    serializer_class = StateSexSerializer
+    serializer_class = StateSexSerializer # trim the db to certain fields only
     # permission_classes = [permissions.IsAuthenticated]
     filter_fields = ['entidad_res', 'municipio_res']
 
@@ -38,7 +45,9 @@ class StateSexAgeSet(viewsets.ViewSet):
     queryset = COVIDData.objects.all()
     serializer_class = StateSexAgeSerializer
 
+    # overriding the viewsets' list method
     def list(self, request, *args, **kwargs):
+        # uncomment for pandas json response
         # age = request.GET['age']
         # covid_df = pd.DataFrame.from_records(COVIDData.objects.filter(edad__gt=age). \
         #                                     values('id_registro', 'sexo', 'entidad_res', 'municipio_res', 'edad'))
