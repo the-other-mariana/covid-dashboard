@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from .models import COVIDData
-from .serializers import StateSexSerializer, StateSexAgeSerializer
+from .serializers import StateSexSerializer, StateSexAgeSerializer, SymptomsSerializer
 
 import pandas as pd
 # Create your views here.
@@ -36,7 +36,42 @@ def pie_chart(request):
 def viz01(request):
     context = {}
     if request.method == 'GET':
+        #covid_df = pd.DataFrame.from_records(COVIDData.objects.all())
+        #symptoms = covid_df[["ID_REGISTRO", "SEXO", "EDAD", "TIPO_PACIENTE", "DIABETES", "ASMA", "HIPERTENSION", "OTRA_COM","CARDIOVASCULAR", "OBESIDAD", "RENAL_CRONICA", "TABAQUISMO"]]
+        symptoms = pd.DataFrame.from_records(COVIDData.objects.all().values('id_registro', 'sexo', 'edad', 'tipo_paciente', 'diabetes', 'asma', 'hipertension', 'otra_com', 'cardiovascular', 'obesidad', 'renal_cronica', 'tabaquismo'))
+        sub = symptoms.groupby(["sexo", "tabaquismo", "tipo_paciente"], as_index=False)["id_registro"].count()
+        sub.rename(columns={"id_registro": "count"}, inplace=True)
+        tab_men = sub[(sub["sexo"] == "HOMBRE") & (sub["tipo_paciente"] == "HOSPITALIZADO") & (sub["tabaquismo"] != "NO")]
+        # tab_women = sub[(sub["SEXO"] == "MUJER") & (sub["TIPO_PACIENTE"] == "HOSPITALIZADO") & (sub["TABAQUISMO"] != "NO")]
+        context = {'data_json': SafeString(tab_men.to_json(orient='records'))}
         return render(request, 'covid_app/viz01.html', context)
+
+'''
+class Viz01(viewsets.ViewSet):
+    queryset = COVIDData.objects.all()
+    #serializer_class = SymptomsSerializer
+
+    def list(self, request, *args, **kwargs):
+        #if request.method == 'GET':
+        
+        covid_df = pd.DataFrame.from_records(COVIDData.objects.all())
+        symptoms = covid_df[["ID_REGISTRO", "SEXO", "EDAD", "TIPO_PACIENTE", "DIABETES", "ASMA", "HIPERTENSION", "OTRA_COM", "CARDIOVASCULAR", "OBESIDAD", "RENAL_CRONICA", "TABAQUISMO"]]
+        sub = symptoms.groupby(["SEXO", "TABAQUISMO", "TIPO_PACIENTE"], as_index=False)["ID_REGISTRO"].count()
+        sub.rename(columns={"ID_REGISTRO": "COUNT"}, inplace=True)
+        tab_men = sub[(sub["SEXO"] == "HOMBRE") & (sub["TIPO_PACIENTE"] == "HOSPITALIZADO") & (sub["TABAQUISMO"] != "NO")]
+        tab_women = sub[(sub["SEXO"] == "MUJER") & (sub["TIPO_PACIENTE"] == "HOSPITALIZADO") & (sub["TABAQUISMO"] != "NO")]
+        context = {'data_json': SafeString(tab_men.to_json(orient='records'))}
+        
+        donut_json = '[ { "region": "East", "fruit": "Apples", "count": "53245" }, { "region": "West", "fruit": ' \
+                     '"Apples", "count": "28479" }, { "region": "South", "fruit": "Apples", "count": "19697" }, ' \
+                     '{ "region": "North", "fruit": "Apples", "count": "24037" }, { "region": "Central", ' \
+                     '"fruit": "Apples", "count": "40245" }, { "region": "East", "fruit": "Oranges", "count": "200" ' \
+                     '}, { "region": "South", "fruit": "Oranges", "count": "200" }, { "region": "Central", ' \
+                     '"fruit": "Oranges", "count": "200" }] '
+        context = {'data_json': SafeString(donut_json)}  # send data json to template html
+        return Response(request, 'covid_app/viz01.html', context)
+'''
+
 
 
 class StateSexSet(viewsets.ModelViewSet):

@@ -13,3 +13,8 @@ class StateSexAgeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = COVIDData
         fields = ['id_registro', 'sexo', 'entidad_res', 'municipio_res', 'edad']
+
+class SymptomsSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = COVIDData
+        fields = ["ID_REGISTRO", "SEXO", "EDAD", "TIPO_PACIENTE", "DIABETES", "ASMA", "HIPERTENSION", "OTRA_COM", "CARDIOVASCULAR", "OBESIDAD", "RENAL_CRONICA", "TABAQUISMO"]
