@@ -38,14 +38,12 @@ def viz(request):
     choice = request.GET['visualization']
     print("Choice:", choice)
     if request.method == 'GET' and choice == "1":
-        #covid_df = pd.DataFrame.from_records(COVIDData.objects.all())
-        #symptoms = covid_df[["ID_REGISTRO", "SEXO", "EDAD", "TIPO_PACIENTE", "DIABETES", "ASMA", "HIPERTENSION", "OTRA_COM","CARDIOVASCULAR", "OBESIDAD", "RENAL_CRONICA", "TABAQUISMO"]]
         symptoms = pd.DataFrame.from_records(COVIDData.objects.all().values('id_registro', 'sexo', 'edad', 'tipo_paciente', 'diabetes', 'asma', 'hipertension', 'otra_com', 'cardiovascular', 'obesidad', 'renal_cronica', 'tabaquismo'))
         sub = symptoms.groupby(["sexo", "tabaquismo", "tipo_paciente"], as_index=False)["id_registro"].count()
         sub.rename(columns={"id_registro": "count"}, inplace=True)
         tab_men = sub[(sub["sexo"] == "HOMBRE") & (sub["tipo_paciente"] == "HOSPITALIZADO") & (sub["tabaquismo"] != "NO")]
-        # tab_women = sub[(sub["SEXO"] == "MUJER") & (sub["TIPO_PACIENTE"] == "HOSPITALIZADO") & (sub["TABAQUISMO"] != "NO")]
-        context = {'data_json': SafeString(tab_men.to_json(orient='records'))}
+        tab_women = sub[(sub["sexo"] == "MUJER") & (sub["tipo_paciente"] == "HOSPITALIZADO") & (sub["tabaquismo"] != "NO")]
+        context = {'men_json': SafeString(tab_men.to_json(orient='records')), 'women_json': SafeString(tab_women.to_json(orient='records'))}
         return render(request, 'covid_app/viz01.html', context)
 
 '''
