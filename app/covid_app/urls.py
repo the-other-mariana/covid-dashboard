@@ -11,6 +11,7 @@ router.register(r'state_a', views.StateSexAgeSet)
 urlpatterns = [
     path('', views.index, name='index'),
     path('pie/', views.pie_chart, name='donut'),
+    path('viz01/', views.viz01, name='viz01'),
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

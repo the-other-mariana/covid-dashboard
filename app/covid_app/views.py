@@ -33,6 +33,12 @@ def pie_chart(request):
     return render(request, 'covid_app/donut.html', context)
 
 
+def viz01(request):
+    context = {}
+    if request.method == 'GET':
+        return render(request, 'covid_app/viz01.html', context)
+
+
 class StateSexSet(viewsets.ModelViewSet):
     # if you want to filter with sql, do it here in the queryset with objects.filter(params)
     queryset = COVIDData.objects.all()

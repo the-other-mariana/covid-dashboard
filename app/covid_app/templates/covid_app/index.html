@@ -1,10 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
     <meta charset="UTF-8">
-    <title>DJangoApp index</title>
+    <title>Covid Dashboard MX 2020</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/master-style.css' %}">
 </head>
 <body>
- Hello, this is the index
+<div class="d-flex align-items-center justify-content-center" style="display: flex; justify-content: center; align-items: center; height: 100vh">
+    <div class="panel panel-default" style="width: 40%; box-shadow: 0 0 10px 0 rgba(128, 128, 128, 0.438); border-radius: 15px;">
+        <div class="panel-body">
+            <form>
+                <div class="form-group">
+                    <label for="visualization">Choose the visualization:</label>
+                    <select class="form-control" id="visualization">
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                    </select>
+                </div>
+                <div style="text-align: center;">
+                    <button type="submit" class="btn btn-info" formaction="/covid_app/viz01" formmethod="get">
+                        Go
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+
 </body>
 </html>
