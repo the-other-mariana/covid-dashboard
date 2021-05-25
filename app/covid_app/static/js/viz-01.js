@@ -37,7 +37,7 @@ var rects = g.selectAll("rect").data(data);
 rects.enter()
     .append("rect")
     .attr("x", (d) => {
-        return x(d.tab);
+        return x(d.tabaquismo);
     })
     .attr("y", (d) => {
         return y(d.count);
@@ -48,9 +48,6 @@ rects.enter()
     .attr("width", x.bandwidth())
     .attr("fill", (d) => {
         return "blue";
-    })
-    .attr("transform", (d, i) => {
-        return "translate(" + (i * (x.bandwidth() + (x.bandwidth() * 0.5))) + ", 0)";
     });
 
 // bottom axis ticks
