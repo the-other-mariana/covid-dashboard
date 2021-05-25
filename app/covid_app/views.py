@@ -33,9 +33,11 @@ def pie_chart(request):
     return render(request, 'covid_app/donut.html', context)
 
 
-def viz01(request):
-    context = {}
-    if request.method == 'GET':
+def viz(request):
+
+    choice = request.GET['visualization']
+    print("Choice:", choice)
+    if request.method == 'GET' and choice == "1":
         #covid_df = pd.DataFrame.from_records(COVIDData.objects.all())
         #symptoms = covid_df[["ID_REGISTRO", "SEXO", "EDAD", "TIPO_PACIENTE", "DIABETES", "ASMA", "HIPERTENSION", "OTRA_COM","CARDIOVASCULAR", "OBESIDAD", "RENAL_CRONICA", "TABAQUISMO"]]
         symptoms = pd.DataFrame.from_records(COVIDData.objects.all().values('id_registro', 'sexo', 'edad', 'tipo_paciente', 'diabetes', 'asma', 'hipertension', 'otra_com', 'cardiovascular', 'obesidad', 'renal_cronica', 'tabaquismo'))
