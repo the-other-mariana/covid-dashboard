@@ -38,6 +38,8 @@ def viz(request):
 
     choice = request.GET['visualization']
     print("Choice:", choice)
+
+    # first visualization: mariana
     if request.method == 'GET' and choice == "1":
         symptoms = pd.DataFrame.from_records(COVIDData.objects.all().values('id_registro', 'sexo', 'edad', 'tipo_paciente', 'diabetes', 'asma', 'hipertension', 'otra_com', 'cardiovascular', 'obesidad', 'renal_cronica', 'tabaquismo'))
 
@@ -57,6 +59,15 @@ def viz(request):
 
         context = {'json_map': json.dumps(conditions_map), 'keys': json.dumps(conditions)}
         return render(request, 'covid_app/viz01.html', context)
+    # second visualization: mariana
+    if request.method == 'GET' and choice == "2":
+        history = pd.DataFrame.from_records(COVIDData.objects.all().values("id_registro", "sexo", "edad", "tipo_paciente", "fecha_ingreso"))
+        sub2 = history.groupby(["fecha_ingreso", "tipo_paciente"], as_index=False)["id_registro"].count()
+        sub2.rename(columns={"id_registro": "count"}, inplace=True)
+        h_json = SafeString(sub2.to_json(orient='records'))
+
+        context = {'hist_json': h_json}
+        return render(request, 'covid_app/viz02.html', context)
 
 '''
 class Viz01(viewsets.ViewSet):
