@@ -1,11 +1,12 @@
 console.log(data)
 
 var margin = {left:100, right: 100, top: 100, bottom: 100};
-var width = 700;
-var height = 500;
+var width = 600;
+var height = 400;
 var factor = 0.5;
 
-var t = d3.transition().duration(1000);
+var t1 = d3.transition().duration(1000);
+var t2 = d3.transition().duration(1000);
 
 var g = d3.select("#chart-area")
 	.append("svg")
@@ -61,11 +62,13 @@ var xLabel = g.append("text")
 
 var legendArea = g.append("text")
 	.attr("class", "x axis-label")
-	.attr("x", width - 50)
-	.attr("y", height - 20)
-	.style("font", "18px century")
+	.attr("x", width/2)
+	.attr("y", 0)
+	.style("font", "24px century")
 	.attr("text-anchor", "middle")
-	.attr("fill", "gray")
+	.attr("fill", "black")
+
+var k = 0;
 
 function viz(){
     data.forEach((d)=>{
@@ -75,9 +78,10 @@ function viz(){
 	});
 	console.log(data);
 
-	dates = data.map((d) => { return d.fecha_ingreso; });
-	dates_set = new Set(dates);
+	dates1 = data.map((d) => { return d.fecha_ingreso; });
+	dates_set = new Set(dates1);
 	dates = Array.from(dates_set)
+	console.log(dates.length)
 	x.domain([0, dates.length]);
 
 	maxCount = d3.max(data, (d) => { return d.count; });
@@ -118,9 +122,65 @@ function viz(){
 	.selectAll("text")
 	.style("font", "18px century");
 
-	var circles = g.selectAll("circle").data(data, (d) => { return d; });
-	circles.enter()
+
+    d3.interval( ( ) => {
+        update(data, k, dates1, dates);
+        k += 1;
+    }, 1000);
+}
+
+function update(data, k, dates1, dates){
+
+    legendArea.text("Day: " + dates[k % dates.length]);
+
+    xAxisGroup.call(bottomAxis)
+    .selectAll("text")
+    .attr("y", "10")
+    .attr("x", "-5")
+    .style("font", "18px century")
+    .attr("text-anchor", "middle");
+
+    yAxisGroup.call(yAxisCall);
+
+    var circles1 = g.selectAll(".circle1").data([data[(k * 2) % dates1.length]], (d) => { return d; });
+
+    circles1.exit()
+	    .transition(t1)
+	    .attr("class", "circle1")
+		.attr("fill", (d) => {
+			return color(d.tipo_paciente);
+		})
+		.attr("cx", (d) => {
+			var idx = dates.findIndex(date => date === d.fecha_ingreso);
+			return x(idx + 1);
+		})
+		.attr("cy", (d) => {
+			return y(d.count);
+		})
+		.attr("r", (d)=>{
+			return d.count * factor;
+		})
+		.remove();
+
+	circles1.transition(t1)
+	    .attr("class", "circle1")
+		.attr("fill", (d) => {
+			return color(d.tipo_paciente);
+		})
+		.attr("cx", (d) => {
+			var idx = dates.findIndex(date => date === d.fecha_ingreso);
+			return x(idx + 1);
+		})
+		.attr("cy", (d) => {
+			return y(d.count);
+		})
+		.attr("r", (d)=>{
+			return d.count * factor;
+		})
+
+	circles1.enter()
 	.append("circle")
+	    .attr("class", "circle1")
 		.attr("fill", (d) => {
 			return color(d.tipo_paciente)
 		})
@@ -134,6 +194,85 @@ function viz(){
 		.attr("r", (d)=>{
 			return d.count * factor;
 		})
+		.merge(circles1)
+		.transition(t1)
+		    .attr("class", "circle1")
+			.attr("cx", (d) => {
+				var idx = dates.findIndex(date => date === d.fecha_ingreso);
+			    return x(idx + 1);
+			})
+			.attr("cy", (d) => {
+				return y(d.count);
+			})
+			.attr("r", (d)=>{
+				return d.count * factor;
+			});
 
+	var circles2 = g.selectAll(".circle2").data([data[(k * 2 + 1) % dates1.length]], (d) => { return d; });
+
+    circles2.exit()
+	    .transition(t2)
+	    .attr("class", "circle2")
+		.attr("fill", (d) => {
+			return color(d.tipo_paciente);
+		})
+		.attr("cx", (d) => {
+			var idx = dates.findIndex(date => date === d.fecha_ingreso);
+			return x(idx + 1);
+		})
+		.attr("cy", (d) => {
+			return y(d.count);
+		})
+		.attr("r", (d)=>{
+			return d.count * factor;
+		})
+		.remove();
+
+	circles2.transition(t2)
+	    .attr("class", "circle2")
+		.attr("fill", (d) => {
+			return color(d.tipo_paciente);
+		})
+		.attr("cx", (d) => {
+			var idx = dates.findIndex(date => date === d.fecha_ingreso);
+			return x(idx + 1);
+		})
+		.attr("cy", (d) => {
+			return y(d.count);
+		})
+		.attr("r", (d)=>{
+			return d.count * factor;
+		})
+
+	circles2.enter()
+	.append("circle")
+	    .attr("class", "circle2")
+		.attr("fill", (d) => {
+			return color(d.tipo_paciente)
+		})
+		.attr("cx", (d) => {
+		    var idx = dates.findIndex(date => date === d.fecha_ingreso);
+			return x(idx + 1);
+		})
+		.attr("cy", (d) => {
+			return y(d.count);
+		})
+		.attr("r", (d)=>{
+			return d.count * factor;
+		})
+		.merge(circles2)
+		.transition(t2)
+		    .attr("class", "circle2")
+			.attr("cx", (d) => {
+				var idx = dates.findIndex(date => date === d.fecha_ingreso);
+			    return x(idx + 1);
+			})
+			.attr("cy", (d) => {
+				return y(d.count);
+			})
+			.attr("r", (d)=>{
+				return d.count * factor;
+			});
 }
+
 viz();
