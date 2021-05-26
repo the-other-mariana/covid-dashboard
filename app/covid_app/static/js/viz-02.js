@@ -69,6 +69,8 @@ var legendArea = g.append("text")
 	.attr("fill", "black")
 
 var k = 0;
+var dates;
+var dates1;
 
 function viz(){
     data.forEach((d)=>{
@@ -122,15 +124,15 @@ function viz(){
 	.selectAll("text")
 	.style("font", "18px century");
 
-
+    /*
     d3.interval( ( ) => {
         update(data, k, dates1, dates);
         k += 1;
-    }, 1000);
+    }, 1000);*/
 }
 
 function update(data, k, dates1, dates){
-
+    var idx = $("#date-slider").slider("value");
     legendArea.text("Day: " + dates[k % dates.length]);
 
     xAxisGroup.call(bottomAxis)
@@ -273,6 +275,42 @@ function update(data, k, dates1, dates){
 			.attr("r", (d)=>{
 				return d.count * factor;
 			});
+	$("#date-slider").slider("value", +(k % dates.length));
 }
+
+function step(){
+
+	update(data, k, dates1, dates);
+	console.log("Event Handlers Update...");
+	k += 1;
+
+}
+
+$("#play-button").on("click", ( ) => {
+	var button = $("#play-button");
+	if (button.text() == "Play"){
+		console.log("Play case");
+		button.text("Pause");
+		interval = setInterval(step, 1000);
+	} else if (button.text() == "Pause"){
+		console.log("Pause case");
+		button.text("Play");
+		clearInterval(interval);
+	}
+
+});
+
+
+$("#date-slider").slider({
+	max: 6,
+	min: 0,
+	step: 1,
+	slide:(event, ui) => {
+		k = ui.value;
+		console.log("UI: " + k);
+		update(data, k, dates1, dates );
+		k += 1;
+	}
+});
 
 viz();

@@ -8,7 +8,12 @@
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <!-- Custom CSS -->
+    <link href="{% static 'css/jquery-ui.min.css' %}" rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/d3-tip.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
 </head>
 <body>
 {% block content %}
@@ -27,7 +32,15 @@
         <h3>Visualization 2</h3>
     </div>
     <div class="row" style="display: flex; justify-content: center; align-items: center;">
-
+        <div class="col-sm-2">
+            <button id="play-button" class="btn btn-info" style="display: inline;">Play</button>
+        </div>
+        <div class="col-sm-8">
+            <div id="slider-div">
+                <label>Day: <span id="day"></span></label>
+                <div id="date-slider" max=6 min=0 step=1></div>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -40,6 +53,7 @@
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/d3.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
 <!-- Custom JS -->
 <script src="{% static 'js/viz-02.js' %}"></script>
 {% endblock %}
