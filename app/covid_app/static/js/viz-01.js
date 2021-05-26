@@ -119,6 +119,21 @@ function update(data){
                 .attr("fill", (d) => {
                     return color(d[data_keys[idx]]);
                 });
+
+        rects.append("text")
+            .text(function(d) {
+                return "hello";
+            })
+            .attr("x", function(d){
+                return x(d[data_keys[idx]]) + x.bandwidth()/2;
+            })
+            .attr("y", function(d){
+                return y(d.count) - 5;
+            })
+            .attr("font-family" , "sans-serif")
+            .attr("font-size" , "14px")
+            .attr("fill" , "black")
+            .attr("text-anchor", "middle");
 }
 
 function viz(){
