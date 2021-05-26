@@ -5,6 +5,7 @@ from rest_framework.response import Response
 
 from .models import COVIDData
 from .serializers import StateSexSerializer, StateSexAgeSerializer, SymptomsSerializer
+import json
 
 import pandas as pd
 # Create your views here.
@@ -39,11 +40,22 @@ def viz(request):
     print("Choice:", choice)
     if request.method == 'GET' and choice == "1":
         symptoms = pd.DataFrame.from_records(COVIDData.objects.all().values('id_registro', 'sexo', 'edad', 'tipo_paciente', 'diabetes', 'asma', 'hipertension', 'otra_com', 'cardiovascular', 'obesidad', 'renal_cronica', 'tabaquismo'))
-        sub = symptoms.groupby(["sexo", "tabaquismo", "tipo_paciente"], as_index=False)["id_registro"].count()
-        sub.rename(columns={"id_registro": "count"}, inplace=True)
-        tab_men = sub[(sub["sexo"] == "HOMBRE") & (sub["tipo_paciente"] == "HOSPITALIZADO") & (sub["tabaquismo"] != "NO")]
-        tab_women = sub[(sub["sexo"] == "MUJER") & (sub["tipo_paciente"] == "HOSPITALIZADO") & (sub["tabaquismo"] != "NO")]
-        context = {'men_json': SafeString(tab_men.to_json(orient='records')), 'women_json': SafeString(tab_women.to_json(orient='records'))}
+
+        conditions = ['tabaquismo', 'diabetes', 'asma', 'hipertension', 'cardiovascular', 'obesidad', 'renal_cronica', 'otra_com']
+        conditions_map = []
+
+        for c in conditions:
+            sub = symptoms.groupby(["sexo", c, "tipo_paciente"], as_index=False)["id_registro"].count()
+            sub.rename(columns={"id_registro": "count"}, inplace=True)
+            tab_men = sub[(sub["sexo"] == "HOMBRE") & (sub["tipo_paciente"] == "HOSPITALIZADO") & (sub[c] != "NO")]
+            tab_women = sub[(sub["sexo"] == "MUJER") & (sub["tipo_paciente"] == "HOSPITALIZADO") & (sub[c] != "NO")]
+            men = SafeString(tab_men.to_json(orient='records'))
+            women = SafeString(tab_women.to_json(orient='records'))
+
+            conditions_map.append(men)
+            conditions_map.append(women)
+
+        context = {'json_map': json.dumps(conditions_map), 'keys': json.dumps(conditions)}
         return render(request, 'covid_app/viz01.html', context)
 
 '''

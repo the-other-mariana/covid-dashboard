@@ -17,8 +17,8 @@
 <body>
 {% block content %}
 <script>
-    data_men = {{ men_json }}
-    data_women = {{ women_json }}
+    data_mw = {{json_map|safe}}
+    data_keys = {{keys|safe}}
 </script>
 
 <nav class="navbar navbar-default">
@@ -29,20 +29,23 @@
 
 <!-- Bootstrap grid setup -->
 <div class="container">
-    <div class="row">
+    <div class="row" style="display: flex; justify-content: center; align-items: center;">
+        <h3>Hospitalized Patients Health Pre-conditions</h3>
+    </div>
+    <div class="row" style="display: flex; justify-content: center; align-items: center;">
         <div class="col-sm-1">
                 <label for="sex-select" style="display: inline;">Condition:</label>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-3">
             <select id="sex-select" class="form-control">
-                <option selected value="tabaquismo">Tabaquism</option>
-                <option value="diabetes">Diabetes</option>
-                <option value="asma">Asthma</option>
-                <option value="hipertension">Hypertension</option>
-                <option value="cardiovascular">Cardiovascular</option>
-                <option value="obesidad">Obesity</option>
-                <option value="renal_cronica">Chronic Renal</option>
-                <option value="otra_com">Other</option>
+                <option selected value=0>Tabaquism</option>
+                <option value=1>Diabetes</option>
+                <option value=2>Asthma</option>
+                <option value=3>Hypertension</option>
+                <option value=4>Cardiovascular</option>
+                <option value=5>Obesity</option>
+                <option value=6>Chronic Renal</option>
+                <option value=7>Other</option>
             </select>
         </div>
     </div>
