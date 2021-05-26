@@ -28,7 +28,7 @@ var area = d3.scaleLinear()
 var color = d3.scaleOrdinal()
 	.range(d3.schemePastel1);
 
-var bottomAxis = d3.axisBottom(x).tickFormat(d3.format("20"));
+var bottomAxis = d3.axisBottom(x).tickFormat(d3.format(",d"));
 
 var yAxisCall = d3.axisLeft(y);
 
@@ -85,6 +85,8 @@ function viz(){
 	dates = Array.from(dates_set)
 	console.log(dates.length)
 	x.domain([0, dates.length]);
+	bottomAxis.ticks(dates.length);
+
 
 	maxCount = d3.max(data, (d) => { return d.count; });
 	y.domain([0, maxCount]);
@@ -291,10 +293,12 @@ $("#play-button").on("click", ( ) => {
 	if (button.text() == "Play"){
 		console.log("Play case");
 		button.text("Pause");
+		button.attr("class", "btn btn-danger");
 		interval = setInterval(step, 1000);
 	} else if (button.text() == "Pause"){
 		console.log("Pause case");
 		button.text("Play");
+		button.attr("class", "btn btn-info");
 		clearInterval(interval);
 	}
 
