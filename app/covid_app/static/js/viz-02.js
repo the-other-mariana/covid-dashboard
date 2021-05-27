@@ -49,7 +49,7 @@ var yLabel = g.append("text")
     .style("font", "18px century")
 	.attr("text-anchor", "middle")
 	.attr("transform", "rotate(-90)")
-	.text("Rise in Covid-19 Cases");
+	.text("New Covid-19 Cases");
 
 var xLabel = g.append("text")
     .attr("class", "x axis-label")
@@ -58,12 +58,12 @@ var xLabel = g.append("text")
     .style("font", "18px century")
     .attr("text-anchor", "middle")
     .attr("transform", "translate(0, -70)")
-    .text("Time");
+    .text("Time (Days)");
 
 var legendArea = g.append("text")
 	.attr("class", "x axis-label")
 	.attr("x", width/2)
-	.attr("y", 0)
+	.attr("y", -10)
 	.style("font", "24px century")
 	.attr("text-anchor", "middle")
 	.attr("fill", "black")
@@ -126,15 +126,14 @@ function viz(){
 	.selectAll("text")
 	.style("font", "18px century");
 
-    /*
-    d3.interval( ( ) => {
-        update(data, k, dates1, dates);
-        k += 1;
-    }, 1000);*/
 }
+
+var cx = 0
+var cy = 0;
 
 function update(data, k, dates1, dates){
     var idx = $("#date-slider").slider("value");
+
     legendArea.text("Day: " + dates[k % dates.length]);
 
     xAxisGroup.call(bottomAxis)
@@ -190,9 +189,11 @@ function update(data, k, dates1, dates){
 		})
 		.attr("cx", (d) => {
 		    var idx = dates.findIndex(date => date === d.fecha_ingreso);
+		    cx = x(idx + 1)
 			return x(idx + 1);
 		})
 		.attr("cy", (d) => {
+		    cy = y(d.count);
 			return y(d.count);
 		})
 		.attr("r", (d)=>{
@@ -277,13 +278,43 @@ function update(data, k, dates1, dates){
 			.attr("r", (d)=>{
 				return d.count * factor;
 			});
+
+	var labels = g.selectAll("textCircle").data([data[(k * 2) % dates1.length], data[(k * 2 + 1) % dates1.length]])
+
+    labels.enter()
+        .append("text")
+        .attr("x", function(d) {
+        var idx = dates.findIndex(date => date === d.fecha_ingreso);
+            return x(idx + 1);;
+        })
+        .attr("y", function(d) {
+        return y(d.count);
+        })
+        .text(function(d) {
+        return d.count
+        })
+        .style("text-anchor", "middle")
+        .style("font", "14px century")
+        .merge(labels)
+		.transition(t1)
+			.attr("x", (d) => {
+				var idx = dates.findIndex(date => date === d.fecha_ingreso);
+			    return x(idx + 1);
+			})
+			.attr("y", (d) => {
+				return y(d.count);
+			}).text(function(d) {
+            return d.count
+            })
+            .style("text-anchor", "middle")
+            .style("font", "14px century");
+
 	$("#date-slider").slider("value", +(k % dates.length));
 }
 
 function step(){
 
 	update(data, k, dates1, dates);
-	console.log("Event Handlers Update...");
 	k += 1;
 
 }
