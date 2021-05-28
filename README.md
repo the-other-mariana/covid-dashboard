@@ -16,6 +16,7 @@ $ pip install pandas
 $ pip install openpyxl
 $ pip install djangorestframework
 $ pip install django-import-export
+$ pip install django-url-filter
 ```
 
 2. Navigate to the app/ folder, and you will find the Django web application.
