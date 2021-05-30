@@ -21,10 +21,12 @@
     data = {{ hist_json|safe }}
 </script>
 
-<nav class="navbar navbar-default">
-    <div class="container">
-        Visualization 2
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">The Covid Story: Cases Evolution</a>
     </div>
+  </div>
 </nav>
 <!-- Bootstrap grid setup -->
 <div class="container">
@@ -33,7 +35,7 @@
     </div>
     <div class="row" style="display: flex; justify-content: center; align-items: center;">
         <div class="col-sm-2">
-            <button id="play-button" class="btn btn-info" style="display: inline;">Play</button>
+            <button id="play-button" class="btn btn-default" style="display: inline;">Play</button>
         </div>
         <div class="col-sm-4">
             <div id="slider-div">
@@ -42,6 +44,8 @@
             </div>
         </div>
     </div>
+    <br/>
+    <br/>
     <div class="row">
         <div class="col-md-12">
             <div id="chart-area"></div>

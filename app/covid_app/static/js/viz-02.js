@@ -132,6 +132,7 @@ var cx = 0
 var cy = 0;
 
 function update(data, k, dates1, dates){
+    d3.selectAll(".label").remove();
     var idx = $("#date-slider").slider("value");
 
     legendArea.text("Day: " + dates[k % dates.length]);
@@ -293,6 +294,7 @@ function update(data, k, dates1, dates){
         .text(function(d) {
         return d.count
         })
+        .attr("class", "label")
         .style("text-anchor", "middle")
         .style("font", "14px century")
         .merge(labels)
@@ -329,7 +331,7 @@ $("#play-button").on("click", ( ) => {
 	} else if (button.text() == "Pause"){
 		console.log("Pause case");
 		button.text("Play");
-		button.attr("class", "btn btn-info");
+		button.attr("class", "btn btn-default");
 		clearInterval(interval);
 	}
 
