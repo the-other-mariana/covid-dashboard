@@ -28,10 +28,22 @@ $ python manage.py makemigrations
 $ python manage.py migrate
 ```
 
-4. Start the server on `https://localhost:8080/` by typing:
+4. Start the server on `http://localhost:8080/` by typing:
 
 ```
 $ python manage.py runserver 8080
 ```
 
-5. Navigate to the following url `https://localhost:8080/admin` and import the [excel file](https://github.com/the-other-mariana/covid-dashboard/blob/master/export_dataframe_prof.xlsx) with all the data to the Django Admin. You may need to authenticate if it's your first time downloading the repo. If so, do the migrate again and restart the server to access the Django Admin again.
+5. Navigate to the following url `http://localhost:8080/admin` and import the [excel file](https://github.com/the-other-mariana/covid-dashboard/blob/master/export_dataframe_prof.xlsx) with all the data to the Django Admin. You may need to authenticate if it's your first time downloading the repo. If so, do the migrate again and restart the server to access the Django Admin again.
+
+## Sample Output
+
+Once the server starts, go to `http://localhost:8080/covid_app/` and you will enter the webpage index. From there on, you can choose the visualization you want to see. <br />
+
+- Hospitalized Patients Pre-conditions 
+
+![image](https://github.com/the-other-mariana/covid-dashboard/blob/master/media/viz01-gif.gif)
+
+- Covid-19 Cases Evolution
+
+![image](https://github.com/the-other-mariana/covid-dashboard/blob/master/media/viz02-gif.gif)
