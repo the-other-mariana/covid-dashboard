@@ -47,3 +47,9 @@ Once the server starts, go to `http://localhost:8080/covid_app/` and you will en
 - Covid-19 Cases Evolution
 
 ![image](https://github.com/the-other-mariana/covid-dashboard/blob/master/media/viz02-gif.gif)
+
+## Other Files
+
+- [Code that generates an excel dataframe](https://github.com/the-other-mariana/covid-dashboard/blob/master/covid.py)
+
+- [Development log file](https://github.com/the-other-mariana/covid-dashboard/blob/master/DevelopmentLog.md)
