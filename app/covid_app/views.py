@@ -69,6 +69,17 @@ def viz(request):
         context = {'hist_json': h_json}
         return render(request, 'covid_app/viz02.html', context)
 
+    # third visualization: Carlos
+    if request.method == 'GET' and choice == "3":
+        deaths = pd.DataFrame.from_records(COVIDData.objects.all().values('id_registro','fecha_def','sexo'))
+        sub3 = deaths.groupby(["sexo","fecha_def"], as_index=False)["id_registro"].count()
+        sub3.rename(columns={"id_registro":"count"},inplace=True)
+        nosequehago = SafeString(sub3.to_json(orient='records'))
+
+        context = {'wut':nosequehago}
+
+        return render(request,'covid_app/viz03.html',context)
+
 '''
 class Viz01(viewsets.ViewSet):
     queryset = COVIDData.objects.all()
