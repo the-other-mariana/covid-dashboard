@@ -52,3 +52,8 @@ Added the initial files that would be used for this visualization. Also, the fir
 Finally, we figured out how to fix the overlapping of labels in the circles, and it was quite simple!, we just had to append the text of the number of the current circles, instead of appending a text label for each one.
 Then, also we needed to select them by class only and remove them at every update, so that the numbers on screen where just the ones of the current circles. This visualization was finished finally!
 Unlike the first visualization, this one was challenging in the frontend side.
+
+## 05-30-2021 
+
+ - Visualization 3:
+Added the data needed as a json for visualization 3. Created a basic pie chart for the data that updates according to the current gender choice with the death rates of the selected gender group. 
