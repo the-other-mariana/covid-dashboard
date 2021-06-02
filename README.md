@@ -1,5 +1,7 @@
 # Covid Dashboard
 
+Team: Carlos Ruiz, Angel Wiehl and Mariana Avalos.
+
 This is a web visualization tool that analyzes the covid-19 cases for Mexico in 2020.
 
 ## Specfications
