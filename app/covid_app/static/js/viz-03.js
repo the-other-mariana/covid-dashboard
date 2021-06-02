@@ -1,146 +1,91 @@
+var width = 450
+    height = 450
+    margin = 40
+
+// The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
+var radius = Math.min(width, height) / 2 - margin
+
+// append the svg object to the div called 'my_dataviz'
+var svg = d3.select("#my_dataviz")
+  .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+console.log(data_D);
+// set the color scale
+var color = d3.scaleOrdinal()
+  .domain(["men_infected","men_dead","women_infected","women_dead","all_infected","all_dead"])
+  .range(d3.schemeDark2);
 
 
-var margin ={top: 20, right: 300, bottom: 30, left: 50},
-    width = 800 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom,
-    radius = Math.min(width, height) / 2;
-
-var svg = d3.select("#chart-area").append("svg")
-	.attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom);
-var g = svg.append("g")
-    .attr("transform",
-    	"translate(" + width / 2 + "," + height / 2 + ")");
-
-var color = d3.scaleOrdinal(d3.schemeCategory10);
-
-// TODO: create the arc generator for a donut chart.
-// var arc = ...
-var arc = d3.arc()
-    .outerRadius(radius -20)
-    .innerRadius(radius - 80);
-
-// TODO: create the pie layout generator.
-// var pie = ...
-var pie = d3.pie()
-    .value((d) => {return d.count;})
-    .sort(null);
-
-d3.tsv("data/donut2.tsv").then((data) => {
-    // TODO: Transform data to its proper format
-    // count -> number
-    // fruit -> lower case
-
-    console.log(data);
-    data.forEach((d) => {
-        d.count += d.count;
-        d.fruit = d.fruit.toLowerCase();
-    });
-
-
-    // TODO: create the nest function to group by fruits
-    var regionsByFruit = d3.nest()
-        .key((d) => {return d.fruit;})
-        .entries(data);
-
-    console.log(regionsByFruit)
-
-    var label = d3.select("form").selectAll("label")
-        .data(regionsByFruit)
-        .enter().append("label");
-
-    // Dynamically add radio buttons to select the fruit
-    label.append("input")
-        	.attr("type", "radio")
-        	.attr("name", "fruit")
-        	.attr("value", (d) => { return d.key; })
-        	.on("change", update)
-        .filter((d, i) => { return !i; })
-        	.each(update)
-        	.property("checked", true);
-
-    label.append("span")
-        .attr("fill", "red")
-        .text((d) => { return d.key; });
-
-}).catch((error) => {
-    console.log(error);
-});
-
-function update(region) {
-    var path = g.selectAll("path");
-
-    var data0 = path.data(),
-        data1 = pie(region.values);
-
-    // JOIN elements with new data.
-    path = path.data(data1, key);
-
-    // EXIT old elements from the screen.
-    path.exit()
-        .datum((d, i) => {
-        	return findNeighborArc(i, data1, data0, key) || d;
-        })
-        .transition()
-        .duration(750)
-        .attrTween("d", arcTween)
-        .remove();
-
-    // UPDATE elements still on the screen.
-    path.transition()
-        .duration(750)
-        .attrTween("d", arcTween);
-
-    // ENTER new elements in the array.
-    path.enter()
-        .append("path")
-        .each((d, i) => {
-        	this._current =
-        		findNeighborArc(i, data0, data1, key) || d;
-        })
-        .attr("fill", (d) => {
-        	return color(d.data.region)
-        })
-        .transition()
-        .duration(750)
-            .attrTween("d", arcTween);
+function viz(){
+    d3.interval( ( ) => {
+        update(data_D);
+        //flag = !flag;
+    }, 1000);
+    update(data_D);
 }
 
-function key(d) {
-    return d.data.region;
-}
+// A function that create / update the plot for a given variable:
+function update(data) {
+    var election = $('#sex-select  option:selected').val();
 
-function findNeighborArc(i, data0, data1, key) {
-    var d;
-    return (d = findPreceding(i, data0, data1, key)) ? {startAngle: d.endAngle, endAngle: d.endAngle}
-        : (d = findFollowing(i, data0, data1, key)) ? {startAngle: d.startAngle, endAngle: d.startAngle}
-        : null;
-}
-
-// Find the element in data0 that joins the highest preceding element in data1.
-function findPreceding(i, data0, data1, key) {
-    var m = data0.length;
-    while (--i >= 0) {
-        var k = key(data1[i]);
-        for (var j = 0; j < m; ++j) {
-            if (key(data0[j]) === k) return data0[j];
-        }
+    if (election == 0){
+        data = data_D[2];
+    }else if (election == 1){
+        data = data_D[0];
+    }else if (election == 2){
+        data = data_D[1];
     }
+
+  // Compute the position of each group on the pie:
+  var pie = d3.pie()
+    .value(function(d) {return d.value; })
+    .sort(function(a, b) { console.log(a) ; return d3.ascending(a.key, b.key);} ) // This make sure that group order remains the same in the pie chart
+
+  var data_ready = pie(d3.entries(data))
+
+  // map to data
+  var u = svg.selectAll("path")
+    .data(data_ready)
+
+  var arcGenerator = d3.arc()
+    .innerRadius(0)
+    .outerRadius(radius)
+
+  // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
+  u
+    .enter()
+    .append('path')
+    .merge(u)
+    .transition()
+    .duration(1000)
+    .attr('d', arcGenerator)
+    .attr('fill', function(d){ return(color(d.data.key)) })
+    .attr("stroke", "white")
+    .style("stroke-width", "2px")
+    .style("opacity", 1)
+
+  // remove the group that is not present anymore
+  u
+    .exit()
+    .remove();
+
+  u
+    .selectAll('mySlices')
+    .data(data_ready)
+    .enter()
+    .append('text')
+    .text((d)=>{ return "grp"+d.data.key})
+    .attr("transform", (d)=>{return "translate("+arcGenerator.centroid(d)+")";})
+    .style("text-anchor","middle")
+    .style("font-size",17);
+    
+
+
 }
 
-// Find the element in data0 that joins the lowest following element in data1.
-function findFollowing(i, data0, data1, key) {
-    var n = data1.length, m = data0.length;
-    while (++i < n) {
-        var k = key(data1[i]);
-        for (var j = 0; j < m; ++j) {
-            if (key(data0[j]) === k) return data0[j];
-        }
-    }
-}
-
-function arcTween(d) {
-    var i = d3.interpolate(this._current, d);
-    this._current = i(1)
-    return (t) => { return arc(i(t)); };
-}
+// Initialize the plot with the first dataset
+viz()

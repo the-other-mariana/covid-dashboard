@@ -39,6 +39,12 @@ The axes were a big challenge as well as the scales, because we had to adjust th
 
 We had some trouble setting up the django app for all teammates, so we created a README file with the instructions to make it work, so that we did not forget them everytime we wanted to run the app.
 
+## 05-29-2021
+
+- Visualization 3:
+Added the initial files that would be used for this visualization. Also, the first attempt to add the queries to get the data of the death rates of COVID-19 and parse them into json.
+
+
 ## 05-30-2021
 
 - Visualization 2:

@@ -72,11 +72,22 @@ def viz(request):
     # third visualization: Carlos
     if request.method == 'GET' and choice == "3":
         deaths = pd.DataFrame.from_records(COVIDData.objects.all().values('id_registro','fecha_def','sexo'))
-        sub3 = deaths.groupby(["sexo","fecha_def"], as_index=False)["id_registro"].count()
-        sub3.rename(columns={"id_registro":"count"},inplace=True)
-        nosequehago = SafeString(sub3.to_json(orient='records'))
+        total = deaths.groupby(["sexo"], as_index=False)["id_registro"].count()
+        d_men = deaths[(deaths["sexo"] == "HOMBRE") & (pd.notnull(deaths["fecha_def"]))]["id_registro"].count()  # hombres muertos
+        d_women = deaths[(deaths["sexo"] == "MUJER") & (pd.notnull(deaths["fecha_def"]))]["id_registro"].count()  # mujeres muertos
 
-        context = {'wut':nosequehago}
+        total.rename(columns={"id_registro": "count"}, inplace=True)
+        json_men = {"men_infected": int( total["count"][0]), "men_dead": int(d_men)}
+        json_women = {"women_infected": int(total["count"][1]), "women_dead": int(d_women)}
+        json_all = {"all_infected": int(total["count"][1]+total["count"][0]), "all_dead": int(d_women+d_men)}
+
+        deaths_map = []
+
+        deaths_map.append(json_men)
+        deaths_map.append(json_women)
+        deaths_map.append(json_all)
+
+        context = {'death_map':json.dumps(deaths_map)}
 
         return render(request,'covid_app/viz03.html',context)
 
