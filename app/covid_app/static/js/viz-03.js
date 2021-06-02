@@ -1,5 +1,5 @@
-var width = 450
-    height = 450
+var width = 700
+    height = 700
     margin = 40
 
 // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
@@ -73,16 +73,32 @@ function update(data) {
     .exit()
     .remove();
 
-  u
-    .selectAll('mySlices')
-    .data(data_ready)
-    .enter()
-    .append('text')
-    .text((d)=>{ return "grp"+d.data.key})
-    .attr("transform", (d)=>{return "translate("+arcGenerator.centroid(d)+")";})
-    .style("text-anchor","middle")
-    .style("font-size",17);
-    
+  // u
+  //   .selectAll('path')
+  //   .data(data_ready)
+  //   .enter()
+  //   .append('text')
+  //   .text((d)=>{return d.data.key;})
+  //   .attr("transform", (d)=>{return "translate("+arcGenerator.centroid(d)+")";})
+  //   .style("text-anchor","middle")
+  //   .style("font-size",17);
+    svg
+        .selectAll('text')
+        .remove()
+
+    svg
+        .selectAll('mySlices')
+        .data(data_ready)
+        .enter()
+        .append('text')
+        .text(function(d){ return d.data.key + " : "+d.data.value})
+        .attr("transform", function(d) {return "translate(" + (arcGenerator.centroid(d)) + ")";  })
+        .style("text-anchor", "middle")
+        .style("font-size", 20)
+        .style("font-weight",700)
+        .style("fill","white")
+        .style("font-family","Arial")
+        .style("font-variant","small-caps")
 
 
 }

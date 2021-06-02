@@ -77,9 +77,9 @@ def viz(request):
         d_women = deaths[(deaths["sexo"] == "MUJER") & (pd.notnull(deaths["fecha_def"]))]["id_registro"].count()  # mujeres muertos
 
         total.rename(columns={"id_registro": "count"}, inplace=True)
-        json_men = {"men_infected": int( total["count"][0]), "men_dead": int(d_men)}
-        json_women = {"women_infected": int(total["count"][1]), "women_dead": int(d_women)}
-        json_all = {"all_infected": int(total["count"][1]+total["count"][0]), "all_dead": int(d_women+d_men)}
+        json_men = {"men_infected": int( total["count"][0] - d_men), "men_dead": int(d_men)}
+        json_women = {"women_infected": int(total["count"][1]- d_women), "women_dead": int(d_women)}
+        json_all = {"all_infected": int(total["count"][1]+total["count"][0]-d_men-d_women), "all_dead": int(d_women+d_men)}
 
         deaths_map = []
 
