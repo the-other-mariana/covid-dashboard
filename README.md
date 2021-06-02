@@ -50,7 +50,13 @@ Once the server starts, go to `http://localhost:8080/covid_app/` and you will en
 
 ![image](https://github.com/the-other-mariana/covid-dashboard/blob/master/media/viz02-gif.gif)
 
+- Death Rate
+
+![image](https://github.com/the-other-mariana/covid-dashboard/blob/master/media/viz03-gif.gif)
+
 ## Delivery Files
+
+- [Folder with example videos](https://github.com/the-other-mariana/covid-dashboard/tree/master/media)
 
 - [Code that generates an excel dataframe](https://github.com/the-other-mariana/covid-dashboard/blob/master/covid.py)
 
