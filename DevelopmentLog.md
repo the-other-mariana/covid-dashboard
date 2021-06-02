@@ -57,3 +57,8 @@ Unlike the first visualization, this one was challenging in the frontend side.
 
  - Visualization 3:
 Added the data needed as a json for visualization 3. Created a basic pie chart for the data that updates according to the current gender choice with the death rates of the selected gender group. 
+   
+## 06-2-2021
+
+ - Visualization 3:
+Added the labels of the pie chart detailing what the slice represents and the real value of it.
