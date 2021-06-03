@@ -59,6 +59,7 @@ def viz(request):
 
         context = {'json_map': json.dumps(conditions_map), 'keys': json.dumps(conditions)}
         return render(request, 'covid_app/viz01.html', context)
+
     # second visualization: mariana
     if request.method == 'GET' and choice == "2":
         history = pd.DataFrame.from_records(COVIDData.objects.all().values("id_registro", "sexo", "edad", "tipo_paciente", "fecha_ingreso"))
@@ -90,6 +91,36 @@ def viz(request):
         context = {'death_map':json.dumps(deaths_map)}
 
         return render(request,'covid_app/viz03.html',context)
+
+    # fourth visualization: Angel
+    if request.method == 'GET' and choice == "4":
+        iHistory = pd.DataFrame.from_records( COVIDData.objects.all().values("id_registro", "sexo", "fecha_ingreso"))
+        i_all = iHistory.groupby(["sexo", "fecha_ingreso"], as_index=False)["id_registro"].count()
+        i_all.rename(columns={"id_registro": "count"}, inplace=True)
+
+        w = 0
+        m = 0
+        iMen = []
+        iWomen = []
+        for i in range(0, len(i_all["count"])):
+            if(i_all["sexo"][i] == "MUJER"):
+                if(w > 0): iWomen.append( int(i_all["count"][i] + iWomen[w-1]) )
+                else: iWomen.append( int(i_all["count"][i]) )
+                w += 1
+            if(i_all["sexo"][i] == "HOMBRE"):
+                if (m > 0): iMen.append( int(i_all["count"][i] + iMen[m-1]) )
+                else: iMen.append( int(i_all["count"][i]) )
+                m += 1
+
+        iAll = []
+        for j in range(0, len(iMen)):
+            iAll.append( int(iMen[j] + iWomen[j]) )
+
+        infected_map = [ iAll, iWomen, iMen]
+        #print(infected_map)
+
+        context = {'infected_map': json.dumps(infected_map)}
+        return render(request,'covid_app/viz04.html',context)
 
 '''
 class Viz01(viewsets.ViewSet):

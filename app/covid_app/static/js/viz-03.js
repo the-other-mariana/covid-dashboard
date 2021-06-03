@@ -40,23 +40,23 @@ function update(data) {
         data = data_D[1];
     }
 
-  // Compute the position of each group on the pie:
-  var pie = d3.pie()
-    .value(function(d) {return d.value; })
-    .sort(function(a, b) { console.log(a) ; return d3.ascending(a.key, b.key);} ) // This make sure that group order remains the same in the pie chart
+    // Compute the position of each group on the pie:
+    var pie = d3.pie()
+        .value(function(d) {return d.value; })
+        .sort(function(a, b) { console.log(a) ; return d3.ascending(a.key, b.key);} ) // This make sure that group order remains the same in the pie chart
 
-  var data_ready = pie(d3.entries(data))
+    var data_ready = pie(d3.entries(data))
 
-  // map to data
-  var u = svg.selectAll("path")
-    .data(data_ready)
+    // map to data
+    var u = svg.selectAll("path")
+        .data(data_ready)
 
-  var arcGenerator = d3.arc()
-    .innerRadius(0)
-    .outerRadius(radius)
+    var arcGenerator = d3.arc()
+        .innerRadius(0)
+        .outerRadius(radius)
 
-  // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
-  u
+    // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
+    u
     .enter()
     .append('path')
     .merge(u)
@@ -68,20 +68,20 @@ function update(data) {
     .style("stroke-width", "2px")
     .style("opacity", 1)
 
-  // remove the group that is not present anymore
-  u
+    // remove the group that is not present anymore
+    u
     .exit()
     .remove();
 
-  // u
-  //   .selectAll('path')
-  //   .data(data_ready)
-  //   .enter()
-  //   .append('text')
-  //   .text((d)=>{return d.data.key;})
-  //   .attr("transform", (d)=>{return "translate("+arcGenerator.centroid(d)+")";})
-  //   .style("text-anchor","middle")
-  //   .style("font-size",17);
+      // u
+      //   .selectAll('path')
+      //   .data(data_ready)
+      //   .enter()
+      //   .append('text')
+      //   .text((d)=>{return d.data.key;})
+      //   .attr("transform", (d)=>{return "translate("+arcGenerator.centroid(d)+")";})
+      //   .style("text-anchor","middle")
+      //   .style("font-size",17);
     svg
         .selectAll('text')
         .remove()
