@@ -56,9 +56,15 @@ Unlike the first visualization, this one was challenging in the frontend side.
 ## 05-30-2021 
 
  - Visualization 3:
+
 Added the data needed as a json for visualization 3. Created a basic pie chart for the data that updates according to the current gender choice with the death rates of the selected gender group. 
    
 ## 06-2-2021
 
  - Visualization 3:
+
 Added the labels of the pie chart detailing what the slice represents and the real value of it.
+
+- Visualization 4:
+
+Passing the data for this chart was quite challenging also, also due to the fact that the data would be summarized, instead of mainly extracted. The purpose of the graph is to be a stacked chart showing the cumulative of cases through time, but we are running out of time and probably won't look as we would like it to.
